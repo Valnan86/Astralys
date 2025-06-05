@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Astralys - Ropa Gótica Futurista</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Roboto:wght@400&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+
+  <header>
+    <h1>Astralys</h1>
+    <nav>
+      <a href="#inicio">Inicio</a>
+      <a href="#productos">Prendas</a>
+      <a href="novedades.html">Lo Nuevo</a> 
+      <a href="#contacto">Contacto</a>
+      <a href="#carrito">Carrito (<span id="cart-count">0</span>)</a>
+      <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Iniciar sesión</a>
+      <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Registrarse</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="inicio">
+      <h2>Bienvenidos a Astralys</h2>
+      <p>Ropa gótica futurista para almas oscuras del futuro</p>
+      <p>Prendas diseñadas con telas y modelos exclusivos, para personas que esperan el mañana...</p>
+    </section>
+
+    <section id="productos">
+      <h2>Productos</h2>
+      <div class="productos">
+        <div class="producto">
+          <img src="C3T.png" alt="Chaqueta Cyber Gótica">
+          <h3>Chaqueta Cyber Gótica
+            (tallas disponibles)
+          </h3>
+          <p>$120</p>
+          <button class="btn" onclick="addToCart('Chaqueta Cyber Gótica', 120)">Agregar al carrito</button>
+        </div>
+        <div class="producto">
+          <img src="Z6T.png" alt="Botas Futuristas">
+          <h3>Botas Futuristas
+            (pocas unidades)
+          </h3>
+          <p>$95</p>
+          <button class="btn" onclick="addToCart('Botas Futuristas', 95)">Agregar al carrito</button>
+        </div>
+        <div class="producto">
+          <img src="V6T.png" alt="Vestido Oscuro">
+          <h3>Vestido Oscuro
+             (tallas pequeñas)
+          </h3>
+          <p>$130</p>
+          <button class="btn" onclick="addToCart('Vestido Oscuro', 130)">Agregar al carrito</button>
+        </div>
+        <div class="producto">
+          <img src="f2t.png" alt="Lihgtfall">
+          <h3>Lihgtfall black up
+             s,m,l
+          </h3>
+          <p>$170</p>
+          <button class="btn" onclick="addToCart('Vestido Oscuro', 170)">Agregar al carrito</button>
+        </div>
+        <div class="producto">
+          <img src="f8t (1).png" alt="Corage">
+          <h3>Corage
+             Standard
+          </h3>
+          <p>$210</p>
+          <button class="btn" onclick="addToCart('Vestido Oscuro', 210)">Agregar al carrito</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="carrito">
+      <h2>Carrito de Compras</h2>
+      <ul id="cart-list"></ul>
+      <p id="total">Total: $0</p>
+    </section>
+
+    <section id="contacto">
+      <h2>Contacto</h2>
+      <form onsubmit="handleContact(event)">
+        <input type="text" placeholder="Tu nombre" required>
+        <input type="email" placeholder="Correo electrónico" required>
+        <textarea placeholder="Tu mensaje" rows="5" required></textarea>
+        <button type="submit" class="btn">Enviar</button>
+      </form>
+      <section id="agenda" class="container my-5">
+        <h2 class="text-center text-light mb-4">📅 Agenda de Eventos Astralys</h2>
+      
+        
+        <button class="btn btn-outline-light mb-3" data-bs-toggle="modal" data-bs-target="#eventModal">+ Agregar Evento</button>
+      
+       
+        <div id="calendar"></div>
+      </section>
+      <section id="foro" class="container my-5">
+        <h2 class="text-center text-light mb-4">💬 Comunidad Astralys</h2>
+      
+        <form id="commentForm" class="mb-4">
+          <div class="mb-3">
+            <label for="commentName" class="form-label text-light">Nombre</label>
+            <input type="text" class="form-control" id="commentName" required>
+          </div>
+          <div class="mb-3">
+            <label for="commentText" class="form-label text-light">Comentario</label>
+            <textarea class="form-control" id="commentText" rows="3" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Publicar</button>
+        </form>
+      
+        <!-- Lista de comentarios -->
+        <div id="commentList" class="bg-dark text-light p-3 rounded">
+          <h5>Comentarios recientes:</h5>
+          <!-- Comentarios se agregan aquí -->
+        </div>
+      </section>
+      
+      
+    </section>
+  </main>
+
+  <footer>
+    © 2025 Astralys. Todos los derechos reservados.
+          Cochabamba - Bolivia
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- FullCalendar JS -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
+
+    
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      locale: 'es',
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      events: [] 
+    });
+
+    calendar.render();
+
+    // Formulario para agregar evento
+    document.getElementById("eventForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const title = document.getElementById("eventTitle").value;
+      const date = document.getElementById("eventDate").value;
+
+      if (title && date) {
+        calendar.addEvent({
+          title: title,
+          start: date
+        });
+
+        document.getElementById("eventMessage").innerHTML = "<span class='text-success'>Evento agregado correctamente.</span>";
+        document.getElementById("eventForm").reset();
+
+        setTimeout(() => {
+          const modal = bootstrap.Modal.getInstance(document.getElementById("eventModal"));
+          modal.hide();
+          document.getElementById("eventMessage").innerHTML = "";
+        }, 1000);
+      } else {
+        document.getElementById("eventMessage").innerHTML = "<span class='text-danger'>Completa los campos.</span>";
+      }
+    });
+  });
+</script>
+
+  
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content text-dark">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Iniciar sesión</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="loginForm">
+          <div class="mb-3">
+            <label for="email" class="form-label">Correo electrónico</label>
+            <input type="email" class="form-control" id="email" required />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="password" required />
+          </div>
+          <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+        </form>
+        <div id="loginMessage" class="mt-2"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content text-dark">
+      <div class="modal-header">
+        <h5 class="modal-title" id="registerModalLabel">Registrarse</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="registerForm">
+          <div class="mb-3">
+            <label for="regName" class="form-label">Nombre completo</label>
+            <input type="text" class="form-control" id="regName" required />
+          </div>
+          <div class="mb-3">
+            <label for="regEmail" class="form-label">Correo electrónico</label>
+            <input type="email" class="form-control" id="regEmail" required />
+          </div>
+          <div class="mb-3">
+            <label for="regPassword" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="regPassword" required />
+          </div>
+          <button type="submit" class="btn btn-success">Registrarse</button>
+        </form>
+        <div id="registerMessage" class="mt-2"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  
+  document.getElementById("loginForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (email === "usuario@astralys.com" && password === "1234") {
+      document.getElementById("loginMessage").innerHTML = "<span class='text-success'>Bienvenido a Astralys 💫</span>";
+    } else {
+      document.getElementById("loginMessage").innerHTML = "<span class='text-danger'>Correo o contraseña incorrectos</span>";
+    }
+  });
+
+  
+  document.getElementById("registerForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const name = document.getElementById("regName").value;
+    const email = document.getElementById("regEmail").value;
+    const password = document.getElementById("regPassword").value;
+
+    if (name && email && password) {
+      document.getElementById("registerMessage").innerHTML = "<span class='text-success'>¡Registro exitoso! Ahora puedes iniciar sesión.</span>";
+      document.getElementById("registerForm").reset();
+    } else {
+      document.getElementById("registerMessage").innerHTML = "<span class='text-danger'>Completa todos los campos.</span>";
+    }
+  });
+</script>
+
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content text-dark">
+      <div class="modal-header">
+        <h5 class="modal-title" id="eventModalLabel">Agregar Evento</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="eventForm">
+          <div class="mb-3">
+            <label for="eventTitle" class="form-label">Título del Evento</label>
+            <input type="text" class="form-control" id="eventTitle" required>
+          </div>
+          <div class="mb-3">
+            <label for="eventDate" class="form-label">Fecha</label>
+            <input type="date" class="form-control" id="eventDate" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Agregar</button>
+        </form>
+        <div id="eventMessage" class="mt-2"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  
+  function loadComments() {
+    const commentList = document.getElementById('commentList');
+    const storedComments = JSON.parse(localStorage.getItem('comments')) || [];
+
+    commentList.innerHTML = '<h5>Comentarios recientes:</h5>';
+    storedComments.forEach(comment => {
+      const commentDiv = document.createElement('div');
+      commentDiv.classList.add('mb-3', 'border-bottom', 'pb-2');
+      commentDiv.innerHTML = `<strong>${comment.name}</strong><p>${comment.text}</p>`;
+      commentList.appendChild(commentDiv);
+    });
+  }
+
+  
+  document.getElementById('commentForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const name = document.getElementById('commentName').value;
+    const text = document.getElementById('commentText').value;
+
+    const newComment = { name, text };
+    const comments = JSON.parse(localStorage.getItem('comments')) || [];
+    comments.unshift(newComment); 
+    localStorage.setItem('comments', JSON.stringify(comments));
+
+    document.getElementById('commentForm').reset();
+    loadComments();
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', loadComments);
+</script>
+<script>
+  
+  function generateAvatar(name) {
+    const initials = name.charAt(0).toUpperCase();
+    const colors = ['#06b6d4', '#6366f1', '#a855f7', '#f59e0b', '#10b981'];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    return `
+      <div style="
+        width: 40px;
+        height: 40px;
+        background-color: ${color};
+        color: white;
+        font-weight: bold;
+        font-size: 1.2rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+      ">
+        ${initials}
+      </div>
+    `;
+  }
+
+  
+  function loadComments() {
+    const commentList = document.getElementById('commentList');
+    const storedComments = JSON.parse(localStorage.getItem('comments')) || [];
+
+    commentList.innerHTML = '<h5>Comentarios recientes:</h5>';
+    storedComments.forEach(comment => {
+      const commentDiv = document.createElement('div');
+      commentDiv.classList.add('d-flex', 'align-items-start', 'mb-3', 'border-bottom', 'pb-2');
+
+      commentDiv.innerHTML = `
+        ${generateAvatar(comment.name)}
+        <div>
+          <strong>${comment.name}</strong> <br />
+          <small>${comment.date}</small>
+          <p class="mb-1">${comment.text}</p>
+        </div>
+      `;
+
+      commentList.appendChild(commentDiv);
+    });
+  }
+
+  
+  document.getElementById('commentForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const name = document.getElementById('commentName').value;
+    const text = document.getElementById('commentText').value;
+
+    const now = new Date();
+    const date = now.toLocaleString(); 
+
+    const newComment = { name, text, date };
+    const comments = JSON.parse(localStorage.getItem('comments')) || [];
+    comments.unshift(newComment); 
+    localStorage.setItem('comments', JSON.stringify(comments));
+
+    document.getElementById('commentForm').reset();
+    loadComments();
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', loadComments);
+</script>
+
+</body>
+</html>
